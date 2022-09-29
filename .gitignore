@@ -4,3 +4,4 @@ dist
 build
 mert-work/moses.ini
 *.pyc
+.venv
