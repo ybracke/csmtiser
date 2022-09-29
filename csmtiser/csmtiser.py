@@ -61,8 +61,13 @@ class Csmtiser:
         align = ''
         if self.config.align:
             align = '-t '
-        os.system(self.config.moses + '/moses -xml-input exclusive -dl 0 ' + align + '-threads ' + str(
-            self.config.num_cores) + ' -f ' + self.config.working_dir + '/mert-work/moses.ini < ' + pth + ' 2> ' + self.config.working_dir + '/norm.log 1> ' + pth + '.norm')
+        # check if a tuned model exists, otherwise use untuned model
+        if os.path.exists(self.config.working_dir + '/mert-work/moses.ini'):
+            os.system(self.config.moses + '/moses -xml-input exclusive -dl 0 ' + align + '-threads ' + str(
+                self.config.num_cores) + ' -f ' + self.config.working_dir + '/mert-work/moses.ini < ' + pth + ' 2> ' + self.config.working_dir + '/norm.log 1> ' + pth + '.norm')
+        else:
+            os.system(self.config.moses + '/moses -xml-input exclusive -dl 0 ' + align + '-threads ' + str(
+                self.config.num_cores) + ' -f ' + self.config.working_dir + '/model/moses.ini < ' + pth + ' 2> ' + self.config.working_dir + '/norm.log 1> ' + pth + '.norm')
         pth += '.norm'
 
         if self.config.align:
