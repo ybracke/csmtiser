@@ -46,6 +46,15 @@ for index in range(1,len(config.lms)):
 modini.close()
 sys.stdout.write('Tuning the system\n')
 sys.stdout.flush()
-os.system(config.moses_scripts+'training/mert-moses.pl '+config.working_dir+'/dev.orig '+config.working_dir+'/dev.norm '+config.moses+'/moses '+config.working_dir+'/model/moses.mod.ini --mertdir '+config.moses+' --working-dir '+config.working_dir+'/mert-work/ --mertargs="--sctype WER" --decoder-flags="-threads '+str(config.num_cores)+'" >> '+config.working_dir+'/train.log 2>&1')
+# Original tuning
+# os.system(config.moses_scripts+'training/mert-moses.pl '+config.working_dir+'/dev.orig '+config.working_dir+'/dev.norm '+config.moses+'/moses '+config.working_dir+'/model/moses.mod.ini --mertdir '+config.moses+' --working-dir '+config.working_dir+'/mert-work/ --mertargs="--sctype WER" --decoder-flags="-threads '+str(config.num_cores)+'" >> '+config.working_dir+'/train.log 2>&1')
+# Modified tuning by YB:  
+# added at the end: '+' --threads '+str(config.num_cores)+'
+# Background:   
+# You should also run mert-moses.pl with the --threads option so the mert binary
+# runs multithreaded. That's in addition to the --decoder-flags "-threads all"
+# option, which tells the moses binary to run multithreaded.
+# See here: https://moses-support.mit.narkive.com/2aiKVAev/multi-threaded-tuning-with-mert
+os.system(config.moses_scripts+'training/mert-moses.pl '+config.working_dir+'/dev.orig '+config.working_dir+'/dev.norm '+config.moses+'/moses '+config.working_dir+'/model/moses.mod.ini --mertdir '+config.moses+' --working-dir '+config.working_dir+'/mert-work/ --mertargs="--sctype WER" --decoder-flags="-threads '+str(config.num_cores)+'"'+' --threads '+str(config.num_cores)+' >> '+config.working_dir+'/train.log 2>&1')
 sys.stdout.write('Finished\n')
 sys.stdout.flush()
