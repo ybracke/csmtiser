@@ -63,7 +63,9 @@ if config.lowercase:
     config.lms[index]+='.lower'
 
 if config.dev_orig==None:
-  from random import shuffle
+  from random import shuffle, seed
+  # YB: Set random seed for reproducibility
+  seed(config.split_seed)
   sys.stdout.write('Reading data for splitting into train and dev\n')
   data=zip(open(config.train_orig),open(config.train_norm))
   shuffle(data)
